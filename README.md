@@ -7,14 +7,14 @@ Implementation of a shopping cart in Java.
 The goods that can be purchased, together with their normal prices are to be stored in a
 product catalogue and are currently:
 
-● Jacket – £49.90
-● Trousers – £35.50
-● Shirt – £12.50
-● Tie – £9.50
+- Jacket – £49.90
+- Trousers – £35.50
+- Shirt – £12.50
+- Tie – £9.50
 
 Current special offers:
-    Trousers have a 10% discount off their normal price this week
-    Buy 2 shirts and get a tie for half price
+   -- Trousers have a 10% discount off their normal price this week
+   -- Buy 2 shirts and get a tie for half price
 
 ## Prerequisites
 - Java 8
