@@ -4,12 +4,15 @@
 Implementation of a shopping cart in Java.
 
 ## Requirement
-Items are presented one at a time, in a list, identified by name for example "Apple" or "Banana". Multiple items are present multiple times in the list, so for example ["Apple", "Apple", "Banana"] is a basket with two apples and one banana.
-Items are priced as follows:
-- Apples are 35p each
-- Bananas are 20p each
-- Melons are 50p each, but are available as ‘buy one get one free’
-- Limes are 15p each, but are available in a ‘three for the price of two’ offer Given a list of shopping, calculate the total cost of those items
+The goods that can be purchased, together with their normal prices are to be stored in a
+product catalogue and are currently:
+● Jacket – £49.90
+● Trousers – £35.50
+● Shirt – £12.50
+● Tie – £9.50
+Current special offers:
+    Trousers have a 10% discount off their normal price this week
+    Buy 2 shirts and get a tie for half price
 
 ## Prerequisites
 - Java 8

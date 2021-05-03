@@ -11,7 +11,7 @@ public class ItemTest {
 
     @Test
     public void createItem() {
-        Item item = new Item("Apple", 0.35);
+        Product item = new Product("Apple", 0.35);
         assertEquals(item.getName(), "Apple");
         assertEquals(item.getPrice(), 0.35, 0.01);
     }
@@ -19,8 +19,8 @@ public class ItemTest {
     @Test
     public void addItem() throws ItemNotSameTypeException {
 
-        Item item = new Item("Boo", 0.35);
-        Item newItem = new Item(item);
+        Product item = new Product("Boo", 0.35);
+        Product newItem = new Product(item);
         newItem.setName("Foo");
         newItem.setPrice(0.1);
         assertEquals(newItem.getName(), "Foo");

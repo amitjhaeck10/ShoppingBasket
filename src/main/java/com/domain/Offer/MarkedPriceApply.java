@@ -1,13 +1,13 @@
-package com.domain.filter;
+package com.domain.Offer;
 
 import com.domain.exception.ItemNotSameTypeException;
-import com.domain.model.Item;
+import com.domain.model.Product;
 
 import java.util.List;
 
-public class MarkedPriceFilter extends AbstractFilter {
+public class MarkedPriceApply extends AbstractApply {
     @Override
-    public double filterPrice(List<Item> items) throws ItemNotSameTypeException {
+    public double filterPrice(List<Product> items,Object obj) throws ItemNotSameTypeException {
         super.filterItemsBeforeCalculatePrice(items);
 
         if (items.size() == 0) {

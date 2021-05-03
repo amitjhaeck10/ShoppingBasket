@@ -1,22 +1,23 @@
 package com.domain.model;
 
-import com.domain.filter.*;
-
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.stream.IntStream;
 
+import com.domain.Offer.*;
+import com.domain.utility.PromotionType;
+
 public class Inventory {
 
-    private ConcurrentMap<String, Item> listingItems = new ConcurrentHashMap<String, Item>();
+    private ConcurrentMap<String, Product> listingItems = new ConcurrentHashMap<String, Product>();
     private ConcurrentMap<String, PromotionType> promotions = new ConcurrentHashMap<String, PromotionType>();
-    private ConcurrentMap<String, AbstractFilter> filter = new ConcurrentHashMap<String, AbstractFilter>();
-    private MarkedPriceFilter markedPriceFilter;
-    private BuyOneGetOneFilter buyOneGetOneFilter;
-    private BuyThreeForPriceOfTwoFilter buyThreeForPriceOfTwoHelper;
+    private ConcurrentMap<String, AbstractApply> apply = new ConcurrentHashMap<String, AbstractApply>();
+    private MarkedPriceApply markedPriceApply;
+    private DiscountPercentageApply discountPercentageApply;
+    private BuyTwoShirtHalfPriceTieApply buyTwoShirtHalfPriceTieApply;
 
-    public ConcurrentMap<String, Item> getListingItems() {
+    public ConcurrentMap<String, Product> getListingItems() {
         return listingItems;
     }
 
@@ -24,32 +25,32 @@ public class Inventory {
         return promotions;
     }
 
-    public ConcurrentMap<String, AbstractFilter> getFilter() {
-        return filter;
+    public ConcurrentMap<String, AbstractApply> getApply() {
+        return apply;
     }
 
-    public AbstractFilter defaultNormalHelper() {
-        return new MarkedPriceFilter();
+    public AbstractApply defaultNormalHelper() {
+        return new MarkedPriceApply();
     }
 
-    public Inventory(List<Item> items, List<PromotionType> itemPromotions) {
+    public Inventory(List<Product> items, List<PromotionType> itemPromotions) {
 
-        markedPriceFilter = new MarkedPriceFilter();
-        buyOneGetOneFilter = new BuyOneGetOneFilter();
-        buyThreeForPriceOfTwoHelper = new BuyThreeForPriceOfTwoFilter();
+        markedPriceApply = new MarkedPriceApply();
+        discountPercentageApply = new DiscountPercentageApply();
+        buyTwoShirtHalfPriceTieApply = new BuyTwoShirtHalfPriceTieApply();
 
         IntStream.range(0, items.size()).forEach(i -> {
-            Item item = items.get(i);
+            Product item = items.get(i);
 
             listingItems.put(item.getName(), item);
             promotions.put(item.getName(), itemPromotions.get(i));
 
-            if (itemPromotions.get(i).equals(PromotionType.BUY_ONE_GET_ONE)) {
-                filter.put(item.getName(), buyOneGetOneFilter);
-            } else if (itemPromotions.get(i).equals(PromotionType.BUY_THREE_FOR_PRICE_OF_TWO)) {
-                filter.put(item.getName(), buyThreeForPriceOfTwoHelper);
+            if (itemPromotions.get(i).equals(PromotionType.DISCOUNT_PERCENTAGE)) {
+                apply.put(item.getName(), discountPercentageApply);
+            } else if (itemPromotions.get(i).equals(PromotionType.BUY_TWO_SHIRT_HALF_PRICE_OF_TIE)) {
+                apply.put(item.getName(), buyTwoShirtHalfPriceTieApply);
             } else {
-                filter.put(item.getName(), markedPriceFilter);
+                apply.put(item.getName(), markedPriceApply);
             }
         });
     }

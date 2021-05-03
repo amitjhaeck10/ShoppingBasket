@@ -2,7 +2,7 @@ package com.domain.model;
 
 import com.domain.exception.ItemNotSameTypeException;
 
-public class Item {
+public class Product {
 
     private String name;
     private double price;
@@ -23,12 +23,12 @@ public class Item {
         this.price = price;
     }
 
-    public Item(String name, double price) {
+    public Product(String name, double price) {
         this.name = name;
         this.price = price;
     }
 
-    public Item(Item item) throws ItemNotSameTypeException {
+    public Product(Product item) throws ItemNotSameTypeException {
 
         if (item == null) {
             throw new IllegalArgumentException("Item cannot be null.");

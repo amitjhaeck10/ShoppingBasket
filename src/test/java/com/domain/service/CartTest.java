@@ -1,9 +1,10 @@
 package com.domain.service;
 
 import com.domain.exception.ItemNotSameTypeException;
-import com.domain.filter.PromotionType;
 import com.domain.model.Inventory;
-import com.domain.model.Item;
+import com.domain.model.Product;
+import com.domain.utility.PromotionType;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,27 +20,27 @@ import static org.junit.Assert.*;
 public class CartTest {
 
     private Inventory inventory;
-    private List<Item> items = new CopyOnWriteArrayList<Item>();
+    private List<Product> items = new CopyOnWriteArrayList<Product>();
     private List<PromotionType> itemPromotions = new CopyOnWriteArrayList<PromotionType>();
 
     @Before
     public void setUp() {
-        items.add(new Item("Apple", 0.35));
-        items.add(new Item("Banana", 0.2));
-        items.add(new Item("Melon", 0.5));
-        items.add(new Item("Lime", 0.15));
+        items.add(new Product("Jacket", 49.9));
+        items.add(new Product("Trousers", 35.5));
+        items.add(new Product("Shirt", 12.5));
+        items.add(new Product("Tie", 9.5));
 
         itemPromotions.add(PromotionType.MARKED_PRICE);
+        itemPromotions.add(PromotionType.DISCOUNT_PERCENTAGE);
         itemPromotions.add(PromotionType.MARKED_PRICE);
-        itemPromotions.add(PromotionType.BUY_ONE_GET_ONE);
-        itemPromotions.add(PromotionType.BUY_THREE_FOR_PRICE_OF_TWO);
+        itemPromotions.add(PromotionType.BUY_TWO_SHIRT_HALF_PRICE_OF_TIE);
 
         inventory = new Inventory(items, itemPromotions);
     }
 
     @Test
     public void testCreateBasket() throws ItemNotSameTypeException {
-        List<String> order = new CopyOnWriteArrayList<String>(Arrays.asList("Apple", "Banana", "Banana", "Melon", "Melon", "Melon", "Lime", "Lime", "Lime", "Lime"));
+        List<String> order = new CopyOnWriteArrayList<String>(Arrays.asList("Jacket", "Trousers", "Trousers", "Shirt", "Tie", "Trousers", "Shirt", "Shirt", "Tie", "Tie"));
 
         Cart cart = new Cart(inventory);
         cart.add(order);
@@ -51,34 +52,34 @@ public class CartTest {
 
     @Test
     public void testCalculateFinalPrice() throws ItemNotSameTypeException {
-        List<String> order = new CopyOnWriteArrayList<String>(Arrays.asList("Apple", "Banana", "Banana", "Melon", "Melon", "Melon", "Lime", "Lime", "Lime", "Lime"));
+    	 List<String> order = new CopyOnWriteArrayList<String>(Arrays.asList("Jacket", "Trousers", "Trousers", "Shirt", "Tie", "Trousers", "Shirt", "Shirt", "Tie", "Tie"));
 
         Cart cart = new Cart(inventory);
         cart.add(order);
 
-        assertEquals(cart.calculateFinalPrice(), 2.2d, 0.001);
+        assertEquals(cart.calculateFinalPrice(null,null,null), 2.2d, 0.001);
     }
 
     @Test
     public void testCalculateMarkedPrice() throws ItemNotSameTypeException {
-        List<String> order = new CopyOnWriteArrayList<String>(Arrays.asList("Apple", "Banana", "Banana", "Melon", "Melon", "Melon", "Lime", "Lime", "Lime", "Lime"));
+    	 List<String> order = new CopyOnWriteArrayList<String>(Arrays.asList("Jacket", "Trousers", "Trousers", "Shirt", "Tie", "Trousers", "Shirt", "Shirt", "Tie", "Tie"));
 
         Cart cart = new Cart(inventory);
         cart.add(order);
 
-        assertEquals(cart.calculateMarkerPrice(), 2.85d, 0.001);
+        assertEquals(cart.calculateMarkerPrice(null), 2.85d, 0.001);
     }
 
     @Test
     public void testEmptyCart() throws ItemNotSameTypeException {
-        List<String> order = new CopyOnWriteArrayList<String>(Arrays.asList("Apple", "Lime", "Lime", "Lime"));
+    	 List<String> order = new CopyOnWriteArrayList<String>(Arrays.asList("Jacket", "Trousers", "Trousers", "Shirt", "Tie"));
 
         Cart cart = new Cart(inventory);
         cart.add(order);
         cart.empty();
 
-        assertEquals(cart.calculateMarkerPrice(), 0, 0.0);
-        assertEquals(cart.calculateFinalPrice(), 0, 0.0);
+        assertEquals(cart.calculateMarkerPrice(null), 0, 0.0);
+        assertEquals(cart.calculateFinalPrice(null,null,null), 0, 0.0);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -99,15 +100,10 @@ public class CartTest {
     @Test
     public void testConcurrency() throws InterruptedException, ItemNotSameTypeException {
 
-        List<Item> items = new CopyOnWriteArrayList<Item>(Arrays.asList(new Item("Apple", 0.35), new Item("Banana", 0.2), new Item("Melon", 0.5), new Item("Lime", 0.15)));
-
-        List<PromotionType> itemPromotions = new CopyOnWriteArrayList<PromotionType>(Arrays.asList(PromotionType.MARKED_PRICE, PromotionType.MARKED_PRICE, PromotionType.BUY_ONE_GET_ONE, PromotionType.BUY_THREE_FOR_PRICE_OF_TWO));
-
         Inventory inventory = new Inventory(items, itemPromotions);
-
         Cart cart = new Cart(inventory);
 
-        List<String> order = new LinkedList<>(Arrays.asList("Apple", "Banana", "Banana", "Melon", "Melon", "Melon", "Lime", "Lime", "Lime", "Lime"));
+        List<String> order = new CopyOnWriteArrayList<String>(Arrays.asList("Jacket", "Trousers", "Trousers", "Shirt", "Tie", "Trousers", "Shirt", "Shirt", "Tie", "Tie"));
 
         AtomicInteger finished = new AtomicInteger();
 
@@ -127,16 +123,15 @@ public class CartTest {
             Thread.sleep(100);
         }
 
-        assertTrue(cart.calculateMarkerPrice() > 0);
-        assertTrue(cart.calculateFinalPrice() > 0);
+        assertTrue(cart.calculateMarkerPrice(null) > 0);
+        assertTrue(cart.calculateFinalPrice(null,null,null) > 0);
         assertEquals(cart.getItems().size(), 1100);
         cart.empty();
     }
 
 
     private synchronized String getRandomItem() {
-
-        List<String> order = new LinkedList<>(Arrays.asList("Apple", "Banana", "Banana", "Melon", "Melon", "Melon", "Lime", "Lime", "Lime", "Lime"));
+    	 List<String> order = new CopyOnWriteArrayList<String>(Arrays.asList("Jacket", "Trousers", "Trousers", "Shirt", "Tie", "Trousers", "Shirt", "Shirt", "Tie", "Tie"));
         int rnd = new Random().nextInt(order.size());
         return order.get(rnd);
     }
