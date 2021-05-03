@@ -18,11 +18,11 @@ public class BuyTwoShirtHalfPriceTieTest {
         buyTwoShirtHalfPriceTieApply = new BuyTwoShirtHalfPriceTieApply();
 
         CopyOnWriteArrayList<Product> threadSafeItemList = new CopyOnWriteArrayList<Product>();
-        threadSafeItemList.add(new Product("Shirt", 12.5));
-        threadSafeItemList.add(new Product("Shirt", 12.5));
+        threadSafeItemList.add(new Product("Tie", 9.5));
+        threadSafeItemList.add(new Product("Tie", 9.5));
         threadSafeItemList.add(new Product("Tie", 9.5));
 
-        assertEquals(buyTwoShirtHalfPriceTieApply.filterPrice(threadSafeItemList,2), 4.5d, 4.5);
+        assertEquals(buyTwoShirtHalfPriceTieApply.filterPrice(threadSafeItemList,3), 23.75d, 2.375);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class BuyTwoShirtHalfPriceTieTest {
         buyTwoShirtHalfPriceTieApply = new BuyTwoShirtHalfPriceTieApply();
         CopyOnWriteArrayList<Product> threadSafeItemList = new CopyOnWriteArrayList<Product>();
         threadSafeItemList.add(new Product("Tie", 9.5));
-        threadSafeItemList.add(new Product("Tie", 9.6));
+        threadSafeItemList.add(new Product("Shift", 9.5));
         buyTwoShirtHalfPriceTieApply.filterPrice(threadSafeItemList,0);
     }
 

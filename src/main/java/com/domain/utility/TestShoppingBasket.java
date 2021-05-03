@@ -30,7 +30,7 @@ public class TestShoppingBasket {
         itemPromotions.add(PromotionType.BUY_TWO_SHIRT_HALF_PRICE_OF_TIE);
 
         inventory = new Inventory(items, itemPromotions);
-        List<String> order = new CopyOnWriteArrayList<String>(Arrays.asList("Jacket", "Trousers", "Shirt", "Tie","Shirt"));
+        List<String> order = new CopyOnWriteArrayList<String>(Arrays.asList("Jacket", "Trousers", "Trousers"));
         
         Cart cart = new Cart(inventory);
         cart.add(order);

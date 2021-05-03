@@ -11,20 +11,20 @@ public class ItemTest {
 
     @Test
     public void createItem() {
-        Product item = new Product("Apple", 0.35);
-        assertEquals(item.getName(), "Apple");
-        assertEquals(item.getPrice(), 0.35, 0.01);
+        Product item = new Product("Jacket", 49.9);
+        assertEquals(item.getName(), "Jacket");
+        assertEquals(item.getPrice(), 49.9, 0.01);
     }
 
     @Test
     public void addItem() throws ItemNotSameTypeException {
 
-        Product item = new Product("Boo", 0.35);
+        Product item = new Product("Shirt", 12.5);
         Product newItem = new Product(item);
-        newItem.setName("Foo");
-        newItem.setPrice(0.1);
-        assertEquals(newItem.getName(), "Foo");
-        assertEquals(newItem.getPrice(), 0.1, DELTA);
+        newItem.setName("Shirt");
+        newItem.setPrice(12.5);
+        assertEquals(newItem.getName(), "Shirt");
+        assertEquals(newItem.getPrice(), 12.5, DELTA);
 
     }
 }

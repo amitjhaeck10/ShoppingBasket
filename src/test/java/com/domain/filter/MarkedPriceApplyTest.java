@@ -47,7 +47,7 @@ public class MarkedPriceApplyTest {
         markedPriceFilter = new MarkedPriceApply();
         CopyOnWriteArrayList<Product> threadSafeItemList = new CopyOnWriteArrayList<Product>();
         threadSafeItemList.add(new Product("Shirt", 15.0));
-        threadSafeItemList.add(new Product("Shirt", 15.0));
+        threadSafeItemList.add(new Product("Tie", 15.0));
         markedPriceFilter.filterPrice(threadSafeItemList,0);
     }
 

@@ -11,9 +11,11 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
@@ -22,6 +24,7 @@ public class CartTest {
     private Inventory inventory;
     private List<Product> items = new CopyOnWriteArrayList<Product>();
     private List<PromotionType> itemPromotions = new CopyOnWriteArrayList<PromotionType>();
+    Map<String,List<Product>> prodMap;
 
     @Before
     public void setUp() {
@@ -36,6 +39,7 @@ public class CartTest {
         itemPromotions.add(PromotionType.BUY_TWO_SHIRT_HALF_PRICE_OF_TIE);
 
         inventory = new Inventory(items, itemPromotions);
+        prodMap = items.stream().collect(Collectors.groupingBy(Product::getName));
     }
 
     @Test
@@ -57,7 +61,7 @@ public class CartTest {
         Cart cart = new Cart(inventory);
         cart.add(order);
 
-        assertEquals(cart.calculateFinalPrice(null,null,null), 2.2d, 0.001);
+        assertEquals(cart.calculateFinalPrice("Shirt",prodMap.get("Shirt"),0), 12.5d, 0.001);
     }
 
     @Test
@@ -67,7 +71,7 @@ public class CartTest {
         Cart cart = new Cart(inventory);
         cart.add(order);
 
-        assertEquals(cart.calculateMarkerPrice(null), 2.85d, 0.001);
+        assertEquals(cart.calculateMarkerPrice(prodMap.get("Tie")), 9.5d, 0.001);
     }
 
     @Test
@@ -77,9 +81,11 @@ public class CartTest {
         Cart cart = new Cart(inventory);
         cart.add(order);
         cart.empty();
+        
+        
 
-        assertEquals(cart.calculateMarkerPrice(null), 0, 0.0);
-        assertEquals(cart.calculateFinalPrice(null,null,null), 0, 0.0);
+        assertEquals(cart.calculateMarkerPrice(prodMap.get("Jacket")), 49.9, 0.0);
+        assertEquals(cart.calculateFinalPrice("Jacket",prodMap.get("Jacket"),0), 49.9, 0.0);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -123,8 +129,8 @@ public class CartTest {
             Thread.sleep(100);
         }
 
-        assertTrue(cart.calculateMarkerPrice(null) > 0);
-        assertTrue(cart.calculateFinalPrice(null,null,null) > 0);
+        assertTrue(cart.calculateMarkerPrice(prodMap.get("Jacket")) > 0);
+        assertTrue(cart.calculateFinalPrice("Jacket",prodMap.get("Jacket"),null) > 0);
         assertEquals(cart.getItems().size(), 1100);
         cart.empty();
     }

@@ -82,9 +82,7 @@ public class Cart implements ICart {
 				discount = (Integer) value;
 			}
 			finalPrice += calculateFinalPrice(entry.getKey(),entry.getValue(), discount);
-			
-			//System.out.println("discount : "+discount+"finalPrice: $"+calculateFinalPrice(entry.getKey(),entry.getValue(), discount)+" markedPrice: "+calculateMarkerPrice(entry.getValue()) +" NameProduct: "+entry.getKey());
-			
+				
 			Double priceDiff = calculateMarkerPrice(entry.getValue()) - calculateFinalPrice(entry.getKey(),entry.getValue(), discount);
 			if(priceDiff !=0)
 				discountMap.put(entry.getKey(), priceDiff);			

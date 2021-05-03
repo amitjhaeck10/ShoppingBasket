@@ -43,11 +43,11 @@ public class InventoryTest {
         assertEquals(inventory.getListingItems().get("Jacket").getName(), "Jacket");
         assertEquals(inventory.getListingItems().get("Jacket").getPrice(), 49.9d, 0.01);
         assertEquals(inventory.getListingItems().get("Trousers").getName(), "Trousers");
-        assertEquals(inventory.getListingItems().get("Trousers").getPrice(), 0.2d, 0.01);
+        assertEquals(inventory.getListingItems().get("Trousers").getPrice(), 35.5, 0.01);
         assertEquals(inventory.getListingItems().get("Shirt").getName(), "Shirt");
-        assertEquals(inventory.getListingItems().get("Shirt").getPrice(), 0.5d, 0.01);
+        assertEquals(inventory.getListingItems().get("Shirt").getPrice(), 12.5d, 0.01);
         assertEquals(inventory.getListingItems().get("Tie").getName(), "Tie");
-        assertEquals(inventory.getListingItems().get("Tie").getPrice(), 0.15d, 0.01);
+        assertEquals(inventory.getListingItems().get("Tie").getPrice(), 9.5d, 0.01);
 
         assertNotNull(inventory.getPromotions());
         assertEquals(inventory.getPromotions().get("Jacket"), PromotionType.MARKED_PRICE);

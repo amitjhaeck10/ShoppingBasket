@@ -11,43 +11,43 @@ import static org.junit.Assert.assertEquals;
 
 public class DiscountPercentageApplyTest {
 
-    private DiscountPercentageApply buyOneGetOneFilter;
+    private DiscountPercentageApply discountPercentageApply;
 
     @Test
     public void testDiscount10pcent() throws ItemNotSameTypeException {
-        buyOneGetOneFilter = new DiscountPercentageApply();
+        discountPercentageApply = new DiscountPercentageApply();
 
         CopyOnWriteArrayList<Product> threadSafeItemList = new CopyOnWriteArrayList<Product>();
-        threadSafeItemList.add(new Product("Trousers", 49.9));
-        threadSafeItemList.add(new Product("Trousers", 50.0));
+        threadSafeItemList.add(new Product("Trousers", 49.5));
+        threadSafeItemList.add(new Product("Trousers", 49.5));
 
-        assertEquals(buyOneGetOneFilter.filterPrice(threadSafeItemList,10), 1.0d, 0.01);
+        assertEquals(discountPercentageApply.filterPrice(threadSafeItemList,10), 89.1, 89.1);
     }
 
     @Test
     public void testDiscountZeroPercent() throws ItemNotSameTypeException {
-        buyOneGetOneFilter = new DiscountPercentageApply();
+        discountPercentageApply = new DiscountPercentageApply();
         CopyOnWriteArrayList<Product> threadSafeItemList = new CopyOnWriteArrayList<Product>();
 
-        assertEquals(buyOneGetOneFilter.filterPrice(threadSafeItemList,0), 0.0d, 0.00);
+        assertEquals(discountPercentageApply.filterPrice(threadSafeItemList,0), 0.0d, 0.00);
     }
 
     @Test
     public void testDiscount10Percent() throws ItemNotSameTypeException {
-        buyOneGetOneFilter = new DiscountPercentageApply();
+        discountPercentageApply = new DiscountPercentageApply();
         CopyOnWriteArrayList<Product> threadSafeItemList = new CopyOnWriteArrayList<Product>();
         threadSafeItemList.add(new Product("Toursers", 1));
 
-        assertEquals(buyOneGetOneFilter.filterPrice(threadSafeItemList,10), 1.0d, 0.01);
+        assertEquals(discountPercentageApply.filterPrice(threadSafeItemList,10), 0.9, 0.9);
     }
 
     @Test(expected = ItemNotSameTypeException.class)
     public void testDiscountPercentageWithException() throws ItemNotSameTypeException {
-        buyOneGetOneFilter = new DiscountPercentageApply();
+        discountPercentageApply = new DiscountPercentageApply();
         CopyOnWriteArrayList<Product> threadSafeItemList = new CopyOnWriteArrayList<Product>();
         threadSafeItemList.add(new Product("Trousers", 15));
         threadSafeItemList.add(new Product("Tie", 0.6));
-        buyOneGetOneFilter.filterPrice(threadSafeItemList,30);
+        discountPercentageApply.filterPrice(threadSafeItemList,30);
     }
 
 }
