@@ -30,7 +30,7 @@ public class StepDefinitions {
     }
 
     @Given("^The shopping basket has (\\d+) Jacket, (\\d+) Trousers, (\\d+) Shirt, (\\d+) Tie$")
-    public void the_shopping_basket_has_Apple_Banana_Melon_Lime(int arg1, int arg2, int arg3, int arg4) throws Throwable {
+    public void the_shopping_basket_has_Jacket_Trousers_Shirt_Tie(int arg1, int arg2, int arg3, int arg4) throws Throwable {
 
     	List<String> addItems = new CopyOnWriteArrayList<String>(Arrays.asList("Jacket", "Trousers", "Trousers", "Shirt", "Tie", "Trousers", "Shirt", "Shirt", "Tie", "Tie"));
         cart = new Cart(inventory);
@@ -48,7 +48,7 @@ public class StepDefinitions {
     }
 
     @Given("^The shopping basket has (\\d+) Jacket$")
-    public void the_shopping_basket_has_Apple(int arg1) throws Throwable {
+    public void the_shopping_basket_has_Jacket(int arg1) throws Throwable {
         List<String> addItems = Arrays.asList("Apple");
 
         cart = new Cart(inventory);
@@ -56,7 +56,7 @@ public class StepDefinitions {
     }
 
     @Given("^The shopping basket has (\\d+) Jacket and (\\d+) Shirt$")
-    public void the_shopping_basket_has_Apple_and_banana(int arg1, int arg2) throws Throwable {
+    public void the_shopping_basket_has_Jacket_and_Shirt(int arg1, int arg2) throws Throwable {
         List<String> addItems = Arrays.asList("Jacket", "Shirt", "Shirt");
 
         cart = new Cart(inventory);
